@@ -38,11 +38,14 @@ defmodule Med.Data.RLSNet do
   end
 
   defp extract_english_name(name) do
-    Regex.run(~r/\(([\w ®*]+)\)/, name)
+    Regex.run(~r/\(([\w ®*+]+)\)/, name)
     |> Enum.at(1)
     |> String.replace("®", "")
     |> String.replace("*", "")
     |> String.downcase(:ascii)
+    |> String.split("+")
+    |> hd()
+    |> String.trim()
   end
 
   defp get_section(html, section) do
