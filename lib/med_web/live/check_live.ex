@@ -1,7 +1,7 @@
 defmodule MedWeb.CheckLive do
   use MedWeb, :live_view
 
-  def render(%{loading: true} = assigns) do
+  def render(assigns = %{loading: true}) do
     ~H"""
     <h1>loading</h1>
     """
@@ -15,6 +15,11 @@ defmodule MedWeb.CheckLive do
       <li><b>FDA approved:</b> <%= @fda_approved %></li>
       <li><b>Homeopathy:</b> <%= @homeopathy %></li>
     </ul>
+    <ol class="list-decimal">
+      <%= for research <- @research do %>
+        <li><%= research %></li>
+      <% end %>
+    </ol>
     """
   end
 
@@ -31,7 +36,8 @@ defmodule MedWeb.CheckLive do
        loading: false,
        active_ingredient: drug.active_ingredient,
        homeopathy: drug.homeopathy,
-       fda_approved: drug.fda_approved
+       fda_approved: drug.fda_approved,
+       research: drug.research,
      )}
   end
 end

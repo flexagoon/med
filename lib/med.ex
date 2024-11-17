@@ -1,4 +1,5 @@
 defmodule Med do
+  alias Med.Data.PubMed
   alias Med.Data.FDA
   alias Med.Data.RLSNet
 
@@ -10,6 +11,7 @@ defmodule Med do
   defp fetch_info(%{active_ingredient: nil} = drug), do: drug
 
   defp fetch_info(drug) do
-    drug |> FDA.get_approval()
+    drug |> FDA.get_approval() |> PubMed.get_research()
+  end
   end
 end
