@@ -1,9 +1,15 @@
 defmodule Med do
-  @moduledoc """
-  Med keeps the contexts that define your domain
-  and business logic.
+  alias Med.Data.FDA
+  alias Med.Data.RLSNet
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  def check(name) do
+    RLSNet.fetch(name) |> fetch_info()
+  end
+
+  defp fetch_info(%{homeopathy: true} = drug), do: drug
+  defp fetch_info(%{active_ingredient: nil} = drug), do: drug
+
+  defp fetch_info(drug) do
+    drug |> FDA.get_approval()
+  end
 end

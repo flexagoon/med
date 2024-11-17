@@ -1,8 +1,6 @@
 defmodule MedWeb.CheckLive do
   use MedWeb, :live_view
 
-  import Med.Check
-
   def render(%{loading: true} = assigns) do
     ~H"""
     <h1>loading</h1>
@@ -26,7 +24,7 @@ defmodule MedWeb.CheckLive do
   end
 
   def handle_info(:check, socket) do
-    drug = check(socket.assigns.drug)
+    drug = Med.check(socket.assigns.drug)
 
     {:noreply,
      assign(socket,
