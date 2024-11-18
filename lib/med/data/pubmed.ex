@@ -7,7 +7,10 @@ defmodule Med.Data.PubMed do
 
   def get_research(drug) do
     cochrane_ids = get_cochrane(drug)
-    pubmed_ids = get_regular(drug)
+
+    trade_name_ids = search(drug.name)
+    active_ingredient_ids = search(drug.active_ingredient)
+    pubmed_ids = trade_name_ids ++ active_ingredient_ids
 
     abstracts = get_abstracts(cochrane_ids ++ pubmed_ids)
 
@@ -25,24 +28,22 @@ defmodule Med.Data.PubMed do
         db: "pubmed",
         retmode: "json",
         retmax: 100,
-        term: build_query(drug) <> " AND \"Cochrane Database Syst Rev\"[Journal]"
+        term:
+          "(#{drug.active_ingredient}[Title] OR #{drug.name}[Title]) AND fha[Filter] AND \"Cochrane Database Syst Rev\"[Journal]"
       ]
     ).body["esearchresult"]["idlist"]
   end
 
-  defp get_regular(drug) do
+  defp search(name) do
     Req.get!("#{@base_url}/esearch.fcgi",
       params: [
         db: "pubmed",
         retmode: "json",
         retmax: 100,
-        term: build_query(drug)
+        term: "#{name}[Title/Abstract] AND fha[Filter]"
       ]
     ).body["esearchresult"]["idlist"]
   end
-
-  defp build_query(drug),
-    do: "(#{drug.active_ingredient}[Title] OR #{drug.name}[Title]) AND fha[Filter]"
 
   defp get_abstracts([]), do: []
 
