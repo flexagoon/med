@@ -56,7 +56,8 @@ defmodule Med.MixProject do
       {:bandit, "~> 1.5"},
       # Med? deps
       {:req, "~> 0.5.7"},
-      {:floki, "~> 0.36.3"}
+      {:floki, "~> 0.36.3"},
+      {:anthropix, "~> 0.4.1"}
     ]
   end
 

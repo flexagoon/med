@@ -6,6 +6,8 @@ defmodule Med.Drug do
     fda_approved: false,
     cochrane: 0,
     pubmed: 0,
-    research: []
+    research: [],
+    summary: "",
+    research_score: 0
   ]
 end

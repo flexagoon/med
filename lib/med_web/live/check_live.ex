@@ -16,11 +16,7 @@ defmodule MedWeb.CheckLive do
       <li><b>Homeopathy:</b> <%= @homeopathy %></li>
       <li><b>Research score:</b> <%= @score %></li>
     </ul>
-    <ol class="list-decimal">
-      <%= for research <- @research do %>
-        <li><%= research %></li>
-      <% end %>
-    </ol>
+    <p><%= @summary %></p>
     """
   end
 
@@ -30,7 +26,7 @@ defmodule MedWeb.CheckLive do
   end
 
   def handle_info(:check, socket) do
-    {drug, score} = Med.check(socket.assigns.drug)
+    drug = Med.check(socket.assigns.drug)
 
     {:noreply,
      assign(socket,
@@ -38,8 +34,8 @@ defmodule MedWeb.CheckLive do
        active_ingredient: drug.active_ingredient,
        homeopathy: drug.homeopathy,
        fda_approved: drug.fda_approved,
-       research: drug.research,
-       score: score
+       score: drug.research_score,
+       summary: drug.summary
      )}
   end
 end
