@@ -8,22 +8,22 @@ defmodule Med do
   alias Med.Data.PubMed
   alias Med.Data.RLSNet
 
-  @spec check(String.t()) :: Med.Drug.t()
-  def check(name) do
+  @spec check(String.t(), pid()) :: Med.Drug.t()
+  def check(name, live_pid) do
     name
     |> RLSNet.fetch()
-    |> fetch_info()
+    |> fetch_info(live_pid)
     |> calculate_research_score()
   end
 
-  defp fetch_info(%{homeopathy: true} = drug), do: drug
-  defp fetch_info(%{active_ingredient: nil} = drug), do: drug
+  defp fetch_info(%{homeopathy: true} = drug, _live_pid), do: drug
+  defp fetch_info(%{active_ingredient: nil} = drug, _live_pid), do: drug
 
-  defp fetch_info(drug) do
+  defp fetch_info(drug, live_pid) do
     drug
     |> FDA.get_approval()
     |> PubMed.get_research()
-    |> Claude.summarize_research()
+    |> Claude.summarize_research(live_pid)
   end
 
   defp calculate_research_score(drug) do

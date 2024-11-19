@@ -5,29 +5,23 @@ defmodule Med.Data.Claude do
 
   @system_prompt "You are 'med?', a fact-checking assistant checking the legitimacy of various drugs. Your goal is to summarize the provided research about a drug following the principles of evidence-based medicine"
 
-  @spec summarize_research(Med.Drug.t()) :: Med.Drug.t()
-  def summarize_research(drug) do
+  @spec summarize_research(Med.Drug.t(), pid()) :: Med.Drug.t()
+  def summarize_research(drug, live_pid) do
     client = Anthropix.init()
 
-    {:ok, response} =
-      Anthropix.chat(client,
-        model: "claude-3-5-sonnet-latest",
-        system: @system_prompt,
-        messages: [
-          %{
-            role: "user",
-            content: build_prompt(drug)
-          }
-        ]
-      )
+    Anthropix.chat(client,
+      model: "claude-3-5-sonnet-latest",
+      system: @system_prompt,
+      messages: [
+        %{
+          role: "user",
+          content: build_prompt(drug)
+        }
+      ],
+      stream: live_pid
+    )
 
-    %{
-      "content" => [
-        %{"text" => text} | _
-      ]
-    } = response
-
-    %{drug | summary: text}
+    drug
   end
 
   defp build_prompt(drug) when length(drug.research) < 100 do
