@@ -1,9 +1,14 @@
 defmodule Med do
-  alias Med.Data.PubMed
-  alias Med.Data.FDA
-  alias Med.Data.RLSNet
-  alias Med.Data.Claude
+  @moduledoc """
+  The main module of the application, provides the `check/1` function.
+  """
 
+  alias Med.Data.Claude
+  alias Med.Data.FDA
+  alias Med.Data.PubMed
+  alias Med.Data.RLSNet
+
+  @spec check(String.t()) :: Med.Drug.t()
   def check(name) do
     name
     |> RLSNet.fetch()

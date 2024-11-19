@@ -5,6 +5,7 @@ defmodule Med.Data.PubMed do
 
   @base_url "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
+  @spec get_research(Med.Drug.t()) :: Med.Drug.t()
   def get_research(drug) do
     cochrane_ids = get_cochrane(drug)
 

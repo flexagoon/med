@@ -1,6 +1,7 @@
 defmodule MedWeb.HomeLive do
   use MedWeb, :live_view
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <form phx-submit="check" class="flex flex-col">
@@ -13,10 +14,12 @@ defmodule MedWeb.HomeLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok, assign(socket, med: "")}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("check", %{"med" => med}, socket) do
     med = String.trim(med)
 
@@ -24,7 +27,7 @@ defmodule MedWeb.HomeLive do
       "" ->
         {:noreply, put_flash(socket, :error, "Med name is required")}
 
-      _ ->
+      med ->
         {:noreply, push_navigate(socket, to: ~p"/check?med=#{med}")}
     end
   end

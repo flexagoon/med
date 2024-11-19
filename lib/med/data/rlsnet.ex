@@ -9,17 +9,23 @@ defmodule Med.Data.RLSNet do
 
   alias Med.Drug
 
+  @spec fetch(String.t()) :: Med.Drug.t()
   def fetch(name) do
+    search_response = Req.get!("https://www.rlsnet.ru/search_result.htm", params: [word: name])
+
     url =
-      Req.get!("https://www.rlsnet.ru/search_result.htm", params: [word: name]).body
+      search_response.body
       |> Floki.parse_document!()
       |> Floki.attribute("img.mr-1 + a", "href")
       |> hd()
 
-    data = Req.get!(url).body |> Floki.parse_document!()
+    data_response = Req.get!(url)
+
+    data = Floki.parse_document!(data_response.body)
 
     english_name =
-      Floki.find(data, "h1")
+      data
+      |> Floki.find("h1")
       |> Floki.text()
       |> extract_english_name()
 
@@ -50,8 +56,13 @@ defmodule Med.Data.RLSNet do
 
   defp get_section(html, section) do
     case Floki.find(html, "h2##{section} + div a") do
-      [] -> nil
-      [link | _] -> Floki.text(link) |> String.trim()
+      [] ->
+        nil
+
+      [link | _] ->
+        link
+        |> Floki.text()
+        |> String.trim()
     end
   end
 end

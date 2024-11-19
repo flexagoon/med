@@ -3,6 +3,7 @@ defmodule Med.Data.FDA do
   Module for fetching FDA approval status from FDA.
   """
 
+  @spec get_approval(Med.Drug.t()) :: Med.Drug.t()
   def get_approval(drug) do
     response =
       Req.get!("https://api.fda.gov/drug/drugsfda.json",

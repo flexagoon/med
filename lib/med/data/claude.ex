@@ -5,6 +5,7 @@ defmodule Med.Data.Claude do
 
   @system_prompt "You are 'med?', a fact-checking assistant checking the legitimacy of various drugs. Your goal is to summarize the provided research about a drug following the principles of evidence-based medicine"
 
+  @spec summarize_research(Med.Drug.t()) :: Med.Drug.t()
   def summarize_research(drug) do
     client = Anthropix.init()
 
@@ -42,14 +43,13 @@ defmodule Med.Data.Claude do
     articles_xml =
       drug.research
       |> Enum.take(20)
-      |> Enum.map(fn article ->
+      |> Enum.map_join("\n", fn article ->
         """
         <article>
           #{article}
         </article>
         """
       end)
-      |> Enum.join("\n")
 
     """
     Here are the abstracts of the research articles on the drug "#{drug.name}":

@@ -1,12 +1,14 @@
 defmodule MedWeb.CheckLive do
   use MedWeb, :live_view
 
-  def render(assigns = %{loading: true}) do
+  @impl Phoenix.LiveView
+  def render(%{loading: true} = assigns) do
     ~H"""
     <h1>loading</h1>
     """
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <h1 class="text-2xl font-bold"><%= @drug %></h1>
@@ -20,11 +22,13 @@ defmodule MedWeb.CheckLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     if connected?(socket), do: send(self(), :check)
     {:ok, assign(socket, drug: params["med"], loading: true)}
   end
 
+  @impl Phoenix.LiveView
   def handle_info(:check, socket) do
     drug = Med.check(socket.assigns.drug)
 

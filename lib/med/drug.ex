@@ -1,4 +1,10 @@
 defmodule Med.Drug do
+  @moduledoc """
+  The struct that stores all fetched information about a drug.
+  """
+
+  @type t :: %__MODULE__{}
+
   defstruct [
     :name,
     :active_ingredient,

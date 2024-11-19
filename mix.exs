@@ -57,7 +57,8 @@ defmodule Med.MixProject do
       # Med? deps
       {:req, "~> 0.5.7"},
       {:floki, "~> 0.36.3"},
-      {:anthropix, "~> 0.4.1"}
+      {:anthropix, "~> 0.4.1"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
