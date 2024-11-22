@@ -12,7 +12,6 @@ defmodule Med.Drug do
     fda_approved: false,
     cochrane: 0,
     pubmed: 0,
-    research: [],
     summary: "",
     research_score: 0
   ]

@@ -5,8 +5,8 @@ defmodule Med.Data.Claude do
 
   @system_prompt "You are 'med?', a fact-checking assistant checking the legitimacy of various drugs. Your goal is to summarize the provided research about a drug following the principles of evidence-based medicine"
 
-  @spec summarize_research(Med.Drug.t(), pid()) :: Med.Drug.t()
-  def summarize_research(drug, live_pid) do
+  @spec summarize_research({[String.t()], Med.Drug.t()}, pid()) :: Med.Drug.t()
+  def summarize_research({_research, drug} = data, live_pid) do
     client = Anthropix.init()
 
     Anthropix.chat(client,
@@ -15,7 +15,7 @@ defmodule Med.Data.Claude do
       messages: [
         %{
           role: "user",
-          content: build_prompt(drug)
+          content: build_prompt(data)
         }
       ],
       stream: live_pid
@@ -24,18 +24,18 @@ defmodule Med.Data.Claude do
     drug
   end
 
-  defp build_prompt(drug) when length(drug.research) < 100 do
-    base_prompt(drug) <>
+  defp build_prompt({research, _drug} = data) when length(research) < 100 do
+    base_prompt(data) <>
       """
-      - The quantity of the research - there are only #{length(drug.research)} articles on the topic, take that into account.
+      - The quantity of the research - there are only #{length(research)} articles on the topic, take that into account.
       """
   end
 
-  defp build_prompt(drug), do: base_prompt(drug)
+  defp build_prompt(data), do: base_prompt(data)
 
-  defp base_prompt(drug) do
+  defp base_prompt({research, drug}) do
     articles_xml =
-      drug.research
+      research
       |> Enum.take(20)
       |> Enum.map_join("\n", fn article ->
         """

@@ -18,7 +18,7 @@ defmodule MedWeb.CheckLive do
       <li><b>Homeopathy:</b> <%= @drug.homeopathy %></li>
       <li><b>Research score:</b> <%= @drug.research_score %></li>
     </ul>
-    <p><%= @summary %></p>
+    <p><%= @drug.summary %></p>
     """
   end
 
@@ -31,18 +31,19 @@ defmodule MedWeb.CheckLive do
   @impl Phoenix.LiveView
   def handle_info(:check, socket) do
     drug = Med.check(socket.assigns.name, self())
+    Med.cache(drug)
 
     {:noreply,
      assign(socket,
        loading: false,
-       drug: drug,
-       summary: ""
+       drug: drug
      )}
   end
 
   @impl Phoenix.LiveView
   def handle_info({pid, {:data, data}}, socket) when is_pid(pid) do
     old_summary = socket.assigns.summary
+    drug = socket.assigns.drug
 
     summary =
       case data do
@@ -61,11 +62,15 @@ defmodule MedWeb.CheckLive do
         } ->
           old_summary <> text
 
+        %{"type" => "message_stop"} ->
+          Med.cache(drug)
+          old_summary
+
         _msg ->
           old_summary
       end
 
-    {:noreply, assign(socket, summary: summary)}
+    {:noreply, assign(socket, %{drug | summary: summary})}
   end
 
   @impl Phoenix.LiveView

@@ -5,12 +5,23 @@ defmodule Med.Application do
 
   use Application
 
+  import Cachex.Spec
+
+  @hours_in_half_year 6 * 30 * 24
+
   @impl Application
   def start(_type, _args) do
     children = [
       MedWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:med, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Med.PubSub},
+      {Cachex,
+       [
+         :med,
+         [
+           expiration: expiration(default: :timer.hours(@hours_in_half_year))
+         ]
+       ]},
       # Start a worker by calling: Med.Worker.start_link(arg)
       # {Med.Worker, arg},
       # Start to serve requests, typically the last entry
@@ -20,7 +31,11 @@ defmodule Med.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Med.Supervisor]
-    Supervisor.start_link(children, opts)
+    pid = Supervisor.start_link(children, opts)
+
+    Cachex.restore(:med, "cache.dat")
+
+    pid
   end
 
   # Tell Phoenix to update the endpoint configuration

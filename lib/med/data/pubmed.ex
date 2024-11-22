@@ -5,7 +5,7 @@ defmodule Med.Data.PubMed do
 
   @base_url "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
-  @spec get_research(Med.Drug.t()) :: Med.Drug.t()
+  @spec get_research(Med.Drug.t()) :: {[String.t()], Med.Drug.t()}
   def get_research(drug) do
     cochrane_ids = get_cochrane(drug)
 
@@ -15,12 +15,9 @@ defmodule Med.Data.PubMed do
 
     abstracts = get_abstracts(cochrane_ids ++ pubmed_ids)
 
-    %{
-      drug
-      | cochrane: length(cochrane_ids),
-        pubmed: length(pubmed_ids),
-        research: abstracts
-    }
+    drug = %{drug | cochrane: length(cochrane_ids), pubmed: length(pubmed_ids)}
+
+    {abstracts, drug}
   end
 
   defp get_cochrane(drug) do
