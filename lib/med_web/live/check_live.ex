@@ -55,7 +55,7 @@ defmodule MedWeb.CheckLive do
       <h2 class="text-accent font-bold">Активный ингредиент:</h2>
       <p class="w-fit text-bg p-3 m-3 rounded-xl bg-accent"><%= @drug.active_ingredient %></p>
 
-      <h2 class="text-accent font-bold mt-5">Оценка изученности:</h2>
+      <h2 class="text-accent font-bold mt-10">Оценка изученности:</h2>
       <p class={[
         "w-fit text-bg p-3 m-3 rounded-xl",
         cond do
@@ -66,7 +66,8 @@ defmodule MedWeb.CheckLive do
       ]}>
         <%= @drug.research_score %> / 100
       </p>
-      <ul class="list-disc pl-20 text-2xl">
+      <p class="text-2xl">На основе следующих факторов:</p>
+      <ul class="list-disc pl-10 text-2xl">
         <%= if @drug.fda_approved do %>
           <li>Одобрен FDA</li>
         <% end %>
@@ -87,12 +88,12 @@ defmodule MedWeb.CheckLive do
           <% end %>
         <% end %>
       </ul>
-      <p class="text-xl pt-3">
+      <p class="text-xl pt-3 text-fg/80">
         Обратите внимание: эта оценка указывает на количество существующих исследований, но не на их результат.
         Для получения краткой сводки исследований используйте ИИ-анализ ниже.
       </p>
 
-      <h2 class="text-accent font-bold mt-5">ИИ-анализ:</h2>
+      <h2 class="text-accent font-bold mt-10">ИИ-анализ:</h2>
       <%= if @drug.summary == "" do %>
         <p class="text-xl pt-3 animate-pulse">Генерация анализа...</p>
       <% else %>
