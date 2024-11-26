@@ -3,7 +3,7 @@ defmodule Med.Data.Claude do
   Module for summarizing the research using Claude.
   """
 
-  @system_prompt "You are 'med?', a fact-checking assistant checking the legitimacy of various drugs. Your goal is to summarize the provided research about a drug following the principles of evidence-based medicine"
+  @system_prompt "Вы - 'med?', ассистент по проверке фактов, оценивающий надежность различных лекарственных препаратов. Ваша цель - обобщить предоставленные исследования о препарате, следуя принципам доказательной медицины."
 
   @spec summarize_research({[String.t()], Med.Drug.t()}, pid()) :: Med.Drug.t()
   def summarize_research({_research, drug} = data, live_pid) do
@@ -27,7 +27,7 @@ defmodule Med.Data.Claude do
   defp build_prompt({research, _drug} = data) when length(research) < 100 do
     base_prompt(data) <>
       """
-      - The quantity of the research - there are only #{length(research)} articles on the topic, take that into account.
+      - Количество исследований - по этой теме есть всего #{length(research)} статей, это нужно учесть.
       """
   end
 
@@ -46,22 +46,22 @@ defmodule Med.Data.Claude do
       end)
 
     """
-    Here are the abstracts of the research articles on the drug "#{drug.name}":
+    Вот аннотации научных исследований о препарате "#{drug.name}":
 
     <research>
       #{articles_xml}
     </research>
 
-    Please write a short (~1 paragraph) summary of the research.
+    Пожалуйста, напишите краткую (примерно 1 абзац) сводку исследований на русском языке.
 
-    Remember to evaluate the quality of evidence based on the principles of evidence-based medicine and the scientific method. In your answer, include the following:
+    Не забудьте оценить качество доказательств, основываясь на принципах доказательной медицины и научного метода. В вашем ответе укажите следующее:
 
-    - How well-researched the drug is
-    - What conditions is it proven to be effective/not effective for
-    - In what areas the research is lacking
-    - How trustworthy the overall research is
-    - Any potential bias/conflicts of interest in the research
-    - How trustworthy is the drug on the scale of 1 to 10
+    - Насколько хорошо изучен препарат
+    - При каких состояниях доказана его эффективность/неэффективность
+    - В каких областях исследований недостаточно
+    - Насколько достоверны исследования в целом
+    - Возможная предвзятость/конфликты интересов в исследованиях
+    - Насколько надежен препарат по шкале от 1 до 10
     """
   end
 end
