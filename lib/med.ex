@@ -10,33 +10,41 @@ defmodule Med do
 
   @spec check(String.t(), pid()) :: Med.Drug.t()
   def check(name, live_pid) do
-    case Cachex.get(:med, name) do
-      {:ok, nil} ->
-        name
-        |> RLSNet.fetch()
-        |> fetch_info(live_pid)
-
-      {:ok, drug} ->
-        drug
-    end
+    name
+    |> RLSNet.fetch()
+    |> fetch_info(live_pid)
+    |> cache()
   end
 
-  @spec cache(Med.Drug.t()) :: nil
+  @spec cache(Med.Drug.t()) :: Med.Drug.t()
   def cache(drug) do
     Cachex.put(:med, drug.name, drug)
     Cachex.save(:med, "cache.dat")
-    nil
+    drug
   end
 
   defp fetch_info(%{homeopathy: true} = drug, _live_pid), do: drug
   defp fetch_info(%{active_ingredient: nil} = drug, _live_pid), do: drug
 
   defp fetch_info(drug, live_pid) do
-    drug
-    |> FDA.get_approval()
-    |> PubMed.get_research()
-    |> Claude.summarize_research(live_pid)
-    |> calculate_research_score()
+    case Cachex.get(:med, drug.name) do
+      {:ok, nil} ->
+        drug
+        |> FDA.get_approval()
+        |> PubMed.get_research()
+        |> Claude.summarize_research(live_pid)
+        |> calculate_research_score()
+        |> cache()
+
+      {:ok, %{summary: ""} = drug} ->
+        drug
+        |> PubMed.get_research()
+        |> Claude.summarize_research(live_pid)
+        |> cache()
+
+      {:ok, drug} ->
+        drug
+    end
   end
 
   defp calculate_research_score(drug) do

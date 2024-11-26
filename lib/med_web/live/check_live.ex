@@ -31,7 +31,6 @@ defmodule MedWeb.CheckLive do
   @impl Phoenix.LiveView
   def handle_info(:check, socket) do
     drug = Med.check(socket.assigns.name, self())
-    Med.cache(drug)
 
     {:noreply,
      assign(socket,
@@ -42,7 +41,6 @@ defmodule MedWeb.CheckLive do
 
   @impl Phoenix.LiveView
   def handle_info({pid, {:data, data}}, socket) when is_pid(pid) do
-    old_summary = socket.assigns.summary
     drug = socket.assigns.drug
 
     summary =
@@ -60,17 +58,17 @@ defmodule MedWeb.CheckLive do
           "type" => "content_block_delta",
           "delta" => %{"text" => text}
         } ->
-          old_summary <> text
+          drug.summary <> text
 
         %{"type" => "message_stop"} ->
           Med.cache(drug)
-          old_summary
+          drug.summary
 
         _msg ->
-          old_summary
+          drug.summary
       end
 
-    {:noreply, assign(socket, %{drug | summary: summary})}
+    {:noreply, assign(socket, drug: %{drug | summary: summary})}
   end
 
   @impl Phoenix.LiveView
