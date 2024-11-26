@@ -22,7 +22,7 @@ defmodule Med.Data.RLSNet do
       [] ->
         nil
 
-      [url] ->
+      [url | _other] ->
         fetch_drug(url)
     end
   end
