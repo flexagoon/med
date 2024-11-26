@@ -8,13 +8,15 @@ defmodule Med do
   alias Med.Data.PubMed
   alias Med.Data.RLSNet
 
-  @spec check(String.t(), pid()) :: Med.Drug.t()
+  @spec check(String.t(), pid()) :: Med.Drug.t() | nil
   def check(name, live_pid) do
     name
     |> RLSNet.fetch()
     |> fetch_info(live_pid)
     |> cache()
   end
+
+  def cache(nil), do: nil
 
   @spec cache(Med.Drug.t()) :: Med.Drug.t()
   def cache(drug) do
@@ -23,6 +25,7 @@ defmodule Med do
     drug
   end
 
+  defp fetch_info(nil, _live_pid), do: nil
   defp fetch_info(%{homeopathy: true} = drug, _live_pid), do: drug
   defp fetch_info(%{active_ingredient: nil} = drug, _live_pid), do: drug
 

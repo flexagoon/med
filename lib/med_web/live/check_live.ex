@@ -9,6 +9,21 @@ defmodule MedWeb.CheckLive do
   end
 
   @impl Phoenix.LiveView
+  def render(%{drug: nil} = assigns) do
+    ~H"""
+    <div class="text-bg bg-red-500 w-fit p-3 rounded-xl">
+      <h2 class="text-4xl font-bold pb-3">
+        Препарат не найден <.icon name="hero-exclamation-triangle-solid" class="w-10 h-10" />
+      </h2>
+      <p class="text-xl pb-3">
+        В Государственном Реестре Лекарственных Средств не найдено информации о данном препарате. Убедитесь, что вы
+        верно ввели его название, и что препарат продаётся на территории России.
+      </p>
+    </div>
+    """
+  end
+
+  @impl Phoenix.LiveView
   def render(%{drug: %{homeopathy: true}} = assigns) do
     ~H"""
     <div class="text-bg bg-red-500 w-fit p-3 rounded-xl">

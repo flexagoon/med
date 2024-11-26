@@ -13,12 +13,21 @@ defmodule Med.Data.RLSNet do
   def fetch(name) do
     search_response = Req.get!("https://www.rlsnet.ru/search_result.htm", params: [word: name])
 
-    url =
+    url_tag =
       search_response.body
       |> Floki.parse_document!()
       |> Floki.attribute("img.mr-1 + a", "href")
-      |> hd()
 
+    case url_tag do
+      [] ->
+        nil
+
+      [url] ->
+        fetch_drug(url)
+    end
+  end
+
+  defp fetch_drug(url) do
     data_response = Req.get!(url)
 
     data = Floki.parse_document!(data_response.body)
