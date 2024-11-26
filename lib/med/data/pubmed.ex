@@ -32,6 +32,9 @@ defmodule Med.Data.PubMed do
     ).body["esearchresult"]["idlist"]
   end
 
+  # When the name is too short, the search results may be unrelated.
+  defp search(name) when length(name) < 5, do: []
+
   defp search(name) do
     Req.get!("#{@base_url}/esearch.fcgi",
       params: [
