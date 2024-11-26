@@ -41,7 +41,8 @@ defmodule Med.Data.PubMed do
         db: "pubmed",
         retmode: "json",
         retmax: 100,
-        term: "#{name}[Title/Abstract] AND fha[Filter]"
+        term:
+          "#{name}[Title/Abstract] AND fha[Filter] NOT \"Cochrane Database Syst Rev\"[Journal]"
       ]
     ).body["esearchresult"]["idlist"]
   end
