@@ -8,8 +8,7 @@ defmodule Med.Data.FDA do
     response =
       Req.get!("https://api.fda.gov/drug/drugsfda.json",
         params: [
-          limit: 1,
-          search: "openfda.substance_name:#{drug.active_ingredient}"
+          search: "openfda.substance_name.exact:\"#{String.upcase(drug.active_ingredient)}\""
         ]
       )
 
