@@ -59,6 +59,7 @@ defmodule Med.MixProject do
       {:floki, "~> 0.36.3"},
       {:anthropix, "~> 0.4.1"},
       {:cachex, "~> 4.0"},
+      {:envy, "~> 1.1.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end

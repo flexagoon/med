@@ -1,5 +1,7 @@
 import Config
 
+Envy.auto_load()
+
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
@@ -82,3 +84,7 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 end
+
+config :anthropix,
+       :api_key,
+       System.fetch_env!("ANTHROPIX_API_KEY")
