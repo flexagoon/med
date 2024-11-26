@@ -4,12 +4,24 @@ defmodule MedWeb.HomeLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <form phx-submit="check" class="flex flex-col">
+    <form phx-submit="check">
       <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-      <label>
-        Med name: <input class="border-black border-2" name="med" />
-      </label>
-      <button>Check</button>
+      <label class="font-bold text-4xl" for="med">Название лекарства:</label>
+      <div class="inline-flex w-full my-5 group">
+        <input
+          class="
+            text-4xl
+            border-4 border-fg border-r-0 outline-none group-hover:border-accent focus:border-accent
+            rounded-full rounded-r-none
+            px-7 py-1
+            flex-auto
+            peer"
+          name="med"
+        />
+        <button class="bg-fg rounded-full rounded-l-none p-3 pr-20 text-4xl text-bg font-bold peer-focus:bg-accent group-hover:bg-accent">
+          ?
+        </button>
+      </div>
     </form>
     """
   end
