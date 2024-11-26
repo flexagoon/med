@@ -39,7 +39,7 @@ defmodule Med.Data.RLSNet do
       |> extract_english_name()
 
     is_homeopathy =
-      get_section(data, "farmakologiceskaia-gruppa") == "Гомеопатические средства"
+      String.contains?(get_section(data, "farmakologiceskaia-gruppa"), "Гомеопат")
 
     drug = %Drug{name: english_name, homeopathy: is_homeopathy}
 
