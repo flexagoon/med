@@ -6,11 +6,11 @@ defmodule MedWeb.HomeLive do
     ~H"""
     <form phx-submit="check">
       <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-      <label class="font-bold text-4xl" for="med">Название лекарства:</label>
+      <label class="font-bold text-3xl md:text-4xl" for="med">Название лекарства:</label>
       <div class="inline-flex w-full my-5 group">
         <input
           class="
-            text-4xl
+            text-3xl md:text-4xl
             border-4 border-fg border-r-0 outline-none group-hover:border-accent focus:border-accent
             rounded-full rounded-r-none
             px-7 py-1
