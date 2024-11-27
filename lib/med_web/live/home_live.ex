@@ -18,8 +18,8 @@ defmodule MedWeb.HomeLive do
             peer"
           name="med"
         />
-        <button class="bg-fg rounded-full rounded-l-none p-3 pr-20 text-4xl text-bg font-bold peer-focus:bg-accent group-hover:bg-accent">
-          ?
+        <button class="bg-fg rounded-full rounded-l-none p-3 pr-16 text-3xl md:text-4xl text-bg font-bold peer-focus:bg-accent group-hover:bg-accent">
+          ♥?
         </button>
       </div>
     </form>
