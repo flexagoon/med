@@ -9,7 +9,7 @@ defmodule Med.Data.RLSNet do
 
   alias Med.Drug
 
-  @spec fetch(String.t()) :: Med.Drug.t()
+  @spec fetch(String.t()) :: Med.Drug.t() | nil
   def fetch(name) do
     search_response = Req.get!("https://www.rlsnet.ru/search_result.htm", params: [word: name])
 
