@@ -20,8 +20,11 @@ defmodule Med do
 
   @spec cache(Med.Drug.t()) :: Med.Drug.t()
   def cache(drug) do
+    cache_file = Application.get_env(:med, :cache_file)
+
     Cachex.put(:med, drug.name, drug)
-    Cachex.save(:med, "cache.dat")
+    Cachex.save(:med, cache_file)
+
     drug
   end
 

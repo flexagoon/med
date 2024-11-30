@@ -33,7 +33,9 @@ defmodule Med.Application do
     opts = [strategy: :one_for_one, name: Med.Supervisor]
     pid = Supervisor.start_link(children, opts)
 
-    Cachex.restore(:med, "cache.dat")
+    cache_file = Application.get_env(:med, :cache_file)
+
+    Cachex.restore(:med, cache_file)
 
     pid
   end

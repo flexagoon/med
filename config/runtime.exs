@@ -1,7 +1,5 @@
 import Config
 
-Envy.auto_load()
-
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
@@ -83,6 +81,18 @@ if config_env() == :prod do
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
+end
+
+cache_file =
+  case(config_env()) do
+    :dev -> "cache.dat"
+    _ -> "/cache/cache.dat"
+  end
+
+config :med, :cache_file, cache_file
+
+if config_env() == :dev do
+  Envy.auto_load()
 end
 
 config :anthropix,
