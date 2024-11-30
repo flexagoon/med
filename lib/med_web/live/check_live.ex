@@ -68,18 +68,15 @@ defmodule MedWeb.CheckLive do
     ~H"""
     <div class="text-3xl">
       <h2 class="text-accent font-bold">Активный ингредиент:</h2>
-      <p class="w-fit text-bg p-3 m-3 rounded-xl bg-accent"><%= @drug.active_ingredient %></p>
+      <p class="w-fit p-3 m-3 border-l-4"><%= @drug.active_ingredient %></p>
 
       <h2 class="text-accent font-bold mt-10">Оценка изученности:</h2>
-      <p class={[
-        "w-fit text-bg p-3 m-3 rounded-xl",
-        cond do
-          @drug.research_score < 40 -> "bg-red-500"
-          @drug.research_score < 80 -> "bg-yellow-500"
-          true -> "bg-green-500"
-        end
-      ]}>
-        <%= @drug.research_score %> / 100
+      <p class="w-fit p-3 m-3 border-l-4">
+        <%= @drug.research_score %> / 100 <%= cond do
+          @drug.research_score < 40 -> "📄"
+          @drug.research_score < 80 -> "📝"
+          true -> "📑"
+        end %>
       </p>
       <p class="text-2xl">На основе следующих факторов:</p>
       <ul class="list-disc pl-10 text-2xl">
