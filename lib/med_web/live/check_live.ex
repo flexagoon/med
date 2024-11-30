@@ -12,10 +12,10 @@ defmodule MedWeb.CheckLive do
   def render(%{drug: nil} = assigns) do
     ~H"""
     <div class="text-bg bg-red-500 w-fit p-3 rounded-xl">
-      <h2 class="text-4xl font-bold pb-3">
+      <h2 class="text-3xl sm:text-4xl font-bold pb-3">
         Препарат не найден <.icon name="hero-exclamation-triangle-solid" class="w-10 h-10" />
       </h2>
-      <p class="text-xl pb-3">
+      <p class="text-lg sm:text-xl pb-3">
         В Государственном Реестре Лекарственных Средств не найдено информации о данном препарате. Убедитесь, что вы
         верно ввели его название, и что препарат продаётся на территории России.
       </p>
@@ -27,14 +27,14 @@ defmodule MedWeb.CheckLive do
   def render(%{drug: %{homeopathy: true}} = assigns) do
     ~H"""
     <div class="text-bg bg-red-500 w-fit p-3 rounded-xl">
-      <h2 class="text-4xl font-bold pb-3">
+      <h2 class="text-3xl sm:text-4xl font-bold pb-3">
         Гомеопатическое вещество <.icon name="hero-exclamation-triangle-solid" class="w-10 h-10" />
       </h2>
-      <p class="text-xl pb-3">
+      <p class="text-lg sm:text-xl pb-3">
         Данное средство является гомеопатией. Принципы гомеопатии противоречат фундаментальным законам науки,
         а эффективность гомеопатических средств не была подтверждена ни одним достоверным исследованием.
       </p>
-      <p class="text-xl">
+      <p class="text-lg sm:text-xl">
         Мы не рекомендуем использование данного средства для лечения любых заболеваний.
       </p>
     </div>
@@ -66,7 +66,7 @@ defmodule MedWeb.CheckLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="text-3xl">
+    <div class="text-2xl sm:text-3xl">
       <h2 class="text-accent font-bold">Активный ингредиент:</h2>
       <p class="w-fit p-3 m-3 border-l-4"><%= @drug.active_ingredient %></p>
 
@@ -78,8 +78,8 @@ defmodule MedWeb.CheckLive do
           true -> "📑"
         end %>
       </p>
-      <p class="text-2xl">На основе следующих факторов:</p>
-      <ul class="list-disc pl-10 text-2xl">
+      <p class="text-xl sm:text-2xl">На основе следующих факторов:</p>
+      <ul class="list-disc pl-10 text-xl sm:text-2xl">
         <%= if @drug.fda_approved do %>
           <li>Одобрен FDA</li>
         <% end %>
@@ -100,16 +100,16 @@ defmodule MedWeb.CheckLive do
           <% end %>
         <% end %>
       </ul>
-      <p class="text-xl pt-3 text-fg/80">
+      <p class="text-lg sm:text-xl pt-3 text-fg/80">
         Обратите внимание: эта оценка указывает на количество существующих исследований, но не на их результат.
         Для получения краткой сводки исследований используйте ИИ-анализ ниже.
       </p>
 
       <h2 class="text-accent font-bold mt-10">ИИ-анализ:</h2>
       <%= if @drug.summary == "" do %>
-        <p class="text-xl pt-3 animate-pulse">Генерация анализа...</p>
+        <p class="text-lg sm:text-xl pt-3 animate-pulse">Генерация анализа...</p>
       <% else %>
-        <p class="text-xl pt-3 whitespace-pre-line"><%= @drug.summary %></p>
+        <p class="text-lg sm:text-xl pt-3 whitespace-pre-line"><%= @drug.summary %></p>
       <% end %>
     </div>
     <hr class="my-5" />
