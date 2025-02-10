@@ -42,8 +42,9 @@ defmodule MedWeb do
         formats: [:html, :json],
         layouts: [html: MedWeb.Layouts]
 
+      use Gettext, backend: MedWeb.Gettext
+
       import Plug.Conn
-      import MedWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -81,11 +82,13 @@ defmodule MedWeb do
 
   defp html_helpers do
     quote do
+      # Translation
+      use Gettext, backend: SampleAppWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components and translation
+      # Core UI components
       import MedWeb.CoreComponents
-      import MedWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

@@ -1,13 +1,12 @@
 <header class="px-5 pb-20 sm:px-6 lg:px-8 pt-10 md:ml-8">
   <h1 class="text-5xl md:text-6xl text-accent font-black hover:underline">
     <a href="/">
-      <%= assigns[:page_title] || "med?" %>
+      {assigns[:page_title] || "med?"}
     </a>
   </h1>
 </header>
 <main class="mb-20">
   <div class="mx-auto max-w-2xl px-5">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
+    <.flash_group flash={@flash} /> {@inner_content}
   </div>
 </main>

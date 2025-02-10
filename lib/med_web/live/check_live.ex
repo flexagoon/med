@@ -68,27 +68,25 @@ defmodule MedWeb.CheckLive do
     ~H"""
     <div class="text-2xl sm:text-3xl">
       <h2 class="text-accent font-bold">Активный ингредиент:</h2>
-      <p class="w-fit p-3 m-3 border-l-4"><%= @drug.active_ingredient %></p>
+      <p class="w-fit p-3 m-3 border-l-4">{@drug.active_ingredient}</p>
 
       <h2 class="text-accent font-bold mt-10">Оценка изученности:</h2>
       <p class="w-fit p-3 m-3 border-l-4">
-        <%= @drug.research_score %> / 100 <%= cond do
+        {@drug.research_score} / 100 {cond do
           @drug.research_score < 40 -> "📄"
           @drug.research_score < 80 -> "📝"
           true -> "📑"
-        end %>
+        end}
       </p>
       <p class="text-xl sm:text-2xl">На основе следующих факторов:</p>
       <ul class="list-disc pl-10 text-xl sm:text-2xl">
-        <%= if @drug.fda_approved do %>
-          <li>Одобрен FDA</li>
-        <% end %>
+        <li :if={@drug.fda_approved}>Одобрен FDA</li>
 
         <%= if @drug.cochrane > 0 do %>
           <%= if @drug.cochrane >= 100 do %>
             <li><b class="text-accent">&gt; 100</b> Статей в Cochrane</li>
           <% else %>
-            <li>Статей в Cochrane: <b class="text-accent"><%= @drug.cochrane %></b></li>
+            <li>Статей в Cochrane: <b class="text-accent">{@drug.cochrane}</b></li>
           <% end %>
         <% end %>
 
@@ -96,7 +94,7 @@ defmodule MedWeb.CheckLive do
           <%= if @drug.pubmed >= 100 do %>
             <li><b class="text-accent">&gt; 100</b> Статей в PubMed</li>
           <% else %>
-            <li>Статей в PubMed: <b class="text-accent"><%= @drug.pubmed %></b></li>
+            <li>Статей в PubMed: <b class="text-accent">{@drug.pubmed}</b></li>
           <% end %>
         <% end %>
       </ul>
@@ -109,7 +107,7 @@ defmodule MedWeb.CheckLive do
       <%= if @drug.summary == "" do %>
         <p class="text-lg sm:text-xl pt-3 animate-pulse">Генерация анализа...</p>
       <% else %>
-        <p class="text-lg sm:text-xl pt-3 whitespace-pre-line"><%= @drug.summary %></p>
+        <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">{@drug.summary}</p>
       <% end %>
     </div>
     <hr class="my-5" />
