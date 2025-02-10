@@ -19,15 +19,15 @@ Here's how the code works:
    2. Then, search for non-Cochrane studies by the trade name
    3. Lastly, search for non-Cochrane studies by the active ingredient name
    4. Save the numbers of found studies (`cochrane`, `pubmed`)
-4. Summarize the obtained abstracts using [Claude API](https://www.anthropic.com/api)
+4. Summarize the obtained abstracts using [Gemini API](https://ai.google.dev)
 5. Calculate the research score: $min(fda\\_approved * 40 + cochrane * 10 + pubmed, 100)$ 
 
 ## Launching
 
-Since the app uses Claude API for summarization, you need to obtain an API key
-from the [Anthropic dev console](https://console.anthropic.com/).
+Since the app uses Gemini API for summarization, you need to obtain an API key
+from the [Google AI Studio](https://aistudio.google.com).
 
-Then, set the `ANTHROPIX_API_KEY` environment variable to your API key. The
+Then, set the `GOOGLE_AI_API_KEY` environment variable to your API key. The
 code reads `.env` files, so you can set the variable there if you want.
 
 To launch or build the app, follow the [Phoenix documentation](https://hexdocs.pm/phoenix/overview.html).

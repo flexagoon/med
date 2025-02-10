@@ -96,5 +96,5 @@ if config_env() == :dev do
 end
 
 config :langchain,
-       :anthropic_key,
-       System.fetch_env!("ANTHROPIX_API_KEY")
+       :google_ai_key,
+       System.fetch_env!("GOOGLE_AI_API_KEY")
