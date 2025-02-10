@@ -10,6 +10,7 @@ defmodule Med.Drug do
     :active_ingredient,
     homeopathy: false,
     fda_approved: false,
+    research: "",
     cochrane: 0,
     pubmed: 0,
     summary: "",

@@ -142,37 +142,9 @@ defmodule MedWeb.CheckLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({pid, {:data, data}}, socket) when is_pid(pid) do
+  def handle_info(%LangChain.MessageDelta{content: text, role: :assistant}, socket) do
     drug = socket.assigns.drug
-
-    summary =
-      case data do
-        %{"type" => "message_start"} ->
-          ""
-
-        %{
-          "type" => "content_block_start",
-          "content_block" => %{"text" => text}
-        } ->
-          text
-
-        %{
-          "type" => "content_block_delta",
-          "delta" => %{"text" => text}
-        } ->
-          drug.summary <> text
-
-        %{"type" => "message_stop"} ->
-          Med.cache(drug)
-          drug.summary
-
-        _msg ->
-          drug.summary
-      end
-
+    summary = drug.summary <> text
     {:noreply, assign(socket, drug: %{drug | summary: summary})}
   end
-
-  @impl Phoenix.LiveView
-  def handle_info(_msg, socket), do: {:noreply, socket}
 end

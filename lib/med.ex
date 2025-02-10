@@ -3,8 +3,8 @@ defmodule Med do
   The main module of the application, provides the `check/1` function.
   """
 
-  alias Med.Data.Claude
   alias Med.Data.FDA
+  alias Med.Data.LLM
   alias Med.Data.PubMed
   alias Med.Data.RLSNet
 
@@ -38,15 +38,11 @@ defmodule Med do
         drug
         |> FDA.get_approval()
         |> PubMed.get_research()
-        |> Claude.summarize_research(live_pid)
         |> calculate_research_score()
-        |> cache()
+        |> LLM.summarize_research(live_pid)
 
       {:ok, %{summary: ""} = drug} ->
-        drug
-        |> PubMed.get_research()
-        |> Claude.summarize_research(live_pid)
-        |> cache()
+        LLM.summarize_research(drug, live_pid)
 
       {:ok, drug} ->
         drug

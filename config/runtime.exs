@@ -95,6 +95,6 @@ if config_env() == :dev do
   Envy.auto_load()
 end
 
-config :anthropix,
-       :api_key,
+config :langchain,
+       :anthropic_key,
        System.fetch_env!("ANTHROPIX_API_KEY")
