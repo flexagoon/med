@@ -32,16 +32,7 @@ defmodule Med.Data.LLM do
     |> LLMChain.run()
   end
 
-  defp build_prompt(%Med.Drug{research: research} = drug) when length(research) < 100 do
-    base_prompt(drug) <>
-      """
-      - Количество исследований - по этой теме есть всего #{length(research)} статей, это нужно учесть.
-      """
-  end
-
-  defp build_prompt(drug), do: base_prompt(drug)
-
-  defp base_prompt(drug) do
+  defp build_prompt(drug) do
     articles_xml =
       drug.research
       |> Enum.take(20)
@@ -52,6 +43,8 @@ defmodule Med.Data.LLM do
         </article>
         """
       end)
+
+    research_length = length(drug.research)
 
     """
     Вот аннотации научных исследований о препарате "#{drug.name}":
@@ -76,6 +69,9 @@ defmodule Med.Data.LLM do
     - Насколько достоверны исследования в целом
     - Возможная предвзятость/конфликты интересов в исследованиях
     - Если большинство исследований проведено в России или Китае, это сильно понижает надежность препарата
+    #{if research_length < 100 do
+      "- Количество исследований - по этой теме есть всего #{research_length} статей, это нужно учесть."
+    end}
     """
   end
 
