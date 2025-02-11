@@ -13,7 +13,6 @@ defmodule Med do
     name
     |> RLSNet.fetch()
     |> fetch_info(live_pid)
-    |> cache()
   end
 
   def cache(nil), do: nil
@@ -47,9 +46,11 @@ defmodule Med do
         |> PubMed.get_research()
         |> calculate_research_score()
         |> LLM.summarize_research(live_pid)
+        |> cache()
 
       %{summary: ""} = drug ->
         LLM.summarize_research(drug, live_pid)
+        |> cache()
 
       drug ->
         drug
