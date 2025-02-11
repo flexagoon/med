@@ -28,7 +28,3 @@ kill_signal = 'SIGTERM'
 
 [[vm]]
   size = 'shared-cpu-1x'
-
-[mounts]
-  source = 'cache'
-  destination = '/cache'

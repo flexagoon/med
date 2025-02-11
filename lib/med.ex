@@ -18,14 +18,21 @@ defmodule Med do
 
   def cache(nil), do: nil
 
+  @seconds_in_half_year 6 * 30 * 24 * 60 * 60
+
   @spec cache(Med.Drug.t()) :: Med.Drug.t()
   def cache(drug) do
-    cache_file = Application.get_env(:med, :cache_file)
-
-    Cachex.put(:med, drug.name, drug)
-    Cachex.save(:med, cache_file)
+    data = :erlang.term_to_binary(drug)
+    Redix.command!(:redix, ["SET", drug.name, data, "EX", @seconds_in_half_year])
 
     drug
+  end
+
+  defp get_cache(name) do
+    case Redix.command!(:redix, ["GET", name]) do
+      nil -> nil
+      drug -> :erlang.binary_to_term(drug)
+    end
   end
 
   defp fetch_info(nil, _live_pid), do: nil
@@ -33,18 +40,18 @@ defmodule Med do
   defp fetch_info(%{active_ingredient: nil} = drug, _live_pid), do: drug
 
   defp fetch_info(drug, live_pid) do
-    case Cachex.get(:med, drug.name) do
-      {:ok, nil} ->
+    case get_cache(drug.name) do
+      nil ->
         drug
         |> FDA.get_approval()
         |> PubMed.get_research()
         |> calculate_research_score()
         |> LLM.summarize_research(live_pid)
 
-      {:ok, %{summary: ""} = drug} ->
+      %{summary: ""} = drug ->
         LLM.summarize_research(drug, live_pid)
 
-      {:ok, drug} ->
+      drug ->
         drug
     end
   end

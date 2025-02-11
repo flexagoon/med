@@ -57,7 +57,7 @@ defmodule Med.MixProject do
       {:req, "~> 0.5.7"},
       {:floki, "~> 0.36.3"},
       {:langchain, "~> 0.3.1"},
-      {:cachex, "~> 4.0"},
+      {:redix, "~> 1.5.2"},
       {:envy, "~> 1.1.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]

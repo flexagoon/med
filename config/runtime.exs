@@ -83,17 +83,13 @@ if config_env() == :prod do
   # Check `Plug.SSL` for all available options in `force_ssl`.
 end
 
-cache_file =
-  case(config_env()) do
-    :dev -> "cache.dat"
-    _ -> "/cache/cache.dat"
-  end
-
-config :med, :cache_file, cache_file
-
 if config_env() == :dev do
   Envy.auto_load()
 end
+
+config :med,
+       :redis_url,
+       System.fetch_env!("REDIS_URL")
 
 config :langchain,
        :google_ai_key,
