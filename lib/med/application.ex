@@ -11,7 +11,12 @@ defmodule Med.Application do
       MedWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:med, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Med.PubSub},
-      {Redix, {Application.get_env(:med, :redis_url), [name: :redix]}},
+      {Redix,
+       {Application.get_env(:med, :redis_url),
+        [
+          name: :redix,
+          socket_opts: [:inet6]
+        ]}},
       # Start a worker by calling: Med.Worker.start_link(arg)
       # {Med.Worker, arg},
       # Start to serve requests, typically the last entry
