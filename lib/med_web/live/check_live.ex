@@ -107,7 +107,9 @@ defmodule MedWeb.CheckLive do
       <%= if @drug.summary == "" do %>
         <p class="text-lg sm:text-xl pt-3 animate-pulse">Генерация анализа...</p>
       <% else %>
-        <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">{@drug.summary}</p>
+        <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">
+          {format_summary(@drug.summary)}
+        </p>
       <% end %>
     </div>
     <hr class="my-5" />
@@ -144,5 +146,12 @@ defmodule MedWeb.CheckLive do
     drug = socket.assigns.drug
     summary = drug.summary <> text
     {:noreply, assign(socket, drug: %{drug | summary: summary})}
+  end
+
+  defp format_summary(summary) do
+    summary = Regex.replace(~r/^\* /m, summary, "- ")
+    summary = Regex.replace(~r/\*\*(.*?)\*\*/m, summary, "<b>\\1</b>")
+    summary = Regex.replace(~r/\*(.*?)\*/m, summary, "<i>\\1</i>")
+    raw(summary)
   end
 end
