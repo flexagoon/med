@@ -64,6 +64,32 @@ defmodule MedWeb.CheckLive do
   end
 
   @impl Phoenix.LiveView
+  def render(%{drug: %{research: []}} = assigns) do
+    ~H"""
+    <div class="text-2xl sm:text-3xl">
+      <h2 class="text-accent font-bold">Активный ингредиент:</h2>
+      <p class="w-fit p-3 m-3 border-l-4">{@drug.active_ingredient}</p>
+
+      <h2 class="text-accent font-bold mt-10">Оценка изученности:</h2>
+      <p class="w-fit p-3 m-3 border-l-4">
+        0 / 100 <.icon name="hero-exclamation-triangle-solid" class="w-10 h-10" />
+      </p>
+
+      <p class="text-lg sm:text-xl pt-3 text-fg/80">
+        По препарту не найдено ни одного исследования. Эта оценка учитывает только рандомизированные
+        клинические исследования и мета-анализы. Эти виды исследований считаются самыми надежными, и их
+        отсутствие означает, что препарат плохо изучен.
+      </p>
+    </div>
+    <hr class="my-5" />
+    <p class="text-fg/50">
+      Данные предоставлены в ознакомительных целях и могут быть неточными. Не является медицинской рекомендацией.
+      Информация взята из открытых источников, администрация сайта не несёт за неё ответственности.
+    </p>
+    """
+  end
+
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <div class="text-2xl sm:text-3xl">

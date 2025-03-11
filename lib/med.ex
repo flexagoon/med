@@ -48,7 +48,7 @@ defmodule Med do
         |> LLM.summarize_research(live_pid)
         |> cache()
 
-      %{summary: ""} = drug ->
+      %{summary: "", research: [_ | _]} = drug ->
         LLM.summarize_research(drug, live_pid)
         |> cache()
 

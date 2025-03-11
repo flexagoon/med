@@ -10,6 +10,9 @@ defmodule Med.Data.LLM do
   @system_prompt "Вы - 'med?', ассистент по проверке фактов, оценивающий надежность различных лекарственных препаратов. Ваша цель - обобщить предоставленные исследования о препарате, следуя принципам доказательной медицины."
 
   @spec summarize_research(Med.Drug.t(), pid()) :: Med.Drug.t()
+
+  def summarize_research(drug, _live_pid) when length(drug.research) == 0, do: drug
+
   def summarize_research(drug, live_pid) do
     Task.start(fn ->
       generate(drug, live_pid)
