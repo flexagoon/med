@@ -29,8 +29,11 @@ defmodule Med.Data.PubMed do
         db: "pubmed",
         retmode: "json",
         retmax: 100,
-        term:
-          "(#{drug.active_ingredient}[Title] OR #{drug.name}[Title]) AND fha[Filter] AND \"Cochrane Database Syst Rev\"[Journal]"
+        term: """
+          (#{drug.active_ingredient}[Title] OR #{drug.name}[Title])
+          AND fha[Filter]
+          AND "Cochrane Database Syst Rev"[Journal]
+        """
       ]
     ).body["esearchresult"]["idlist"]
   end
@@ -46,8 +49,12 @@ defmodule Med.Data.PubMed do
         db: "pubmed",
         retmode: "json",
         retmax: 100,
-        term:
-          "#{name}[Title/Abstract] AND fha[Filter] NOT \"Cochrane Database Syst Rev\"[Journal]"
+        term: """
+          #{name}[Title/Abstract]
+          AND ("randomized controlled trial"[Publication Type] OR "meta analysis"[Publication Type])
+          AND fha[Filter]
+          NOT "Cochrane Database Syst Rev"[Journal]
+        """
       ]
     ).body["esearchresult"]["idlist"]
   end
