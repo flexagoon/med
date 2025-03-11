@@ -11,7 +11,7 @@ defmodule Med.Data.PubMed do
 
     trade_name_ids = search(drug.name)
     active_ingredient_ids = search(drug.active_ingredient)
-    pubmed_ids = trade_name_ids ++ active_ingredient_ids
+    pubmed_ids = Enum.uniq(trade_name_ids ++ active_ingredient_ids)
 
     abstracts = get_abstracts(cochrane_ids ++ pubmed_ids)
 
