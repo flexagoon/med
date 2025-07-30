@@ -99,12 +99,6 @@ defmodule MedWeb.CheckResults do
     <% else %>
       <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">{format_summary(@drug.summary)}</p>
     <% end %>
-    <p class="text-sm text-base-content/50 text-right">
-      Анализ создан моделью
-      <a class="underline" href="https://www.anthropic.com/claude/sonnet" target="_blank">
-        Claude Sonnet 4
-      </a>
-    </p>
     """
   end
 
