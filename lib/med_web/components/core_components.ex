@@ -147,7 +147,7 @@ defmodule MedWeb.CoreComponents do
     ~H"""
     <div id={@id}>
       <.flash kind={:info} title={gettext("Success!")} flash={@flash} />
-      <.flash kind={:error} title={gettext("Error!")} flash={@flash} />
+      <.flash kind={:error} title={gettext("Произошла ошибка")} flash={@flash} />
       <.flash
         id="client-error"
         kind={:error}
