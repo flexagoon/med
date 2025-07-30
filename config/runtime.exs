@@ -92,5 +92,5 @@ config :med,
        System.fetch_env!("REDIS_URL")
 
 config :langchain,
-       :google_ai_key,
-       System.fetch_env!("GOOGLE_AI_API_KEY")
+       :anthropic_key,
+       System.fetch_env!("ANTHROPIC_API_KEY")

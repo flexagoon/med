@@ -63,7 +63,7 @@ defmodule MedWeb.HomeLive do
 
     case med do
       "" ->
-        {:noreply, put_flash(socket, :error, "Med name is required")}
+        {:noreply, put_flash(socket, :error, "Вы не ввели название лекарства!")}
 
       med ->
         {:noreply, push_navigate(socket, to: ~p"/check?med=#{med}")}

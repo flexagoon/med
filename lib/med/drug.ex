@@ -6,14 +6,23 @@ defmodule Med.Drug do
   @type t :: %__MODULE__{}
 
   defstruct [
+    # Basic info
     :name,
     :active_ingredient,
-    homeopathy: false,
+    :type,
+    proven: false,
+
+    # Expert and AI descriptions
+    description: "",
+    summary: "",
+
+    # Criteria:
     fda_approved: false,
-    research: [],
     cochrane: 0,
     pubmed: 0,
-    summary: "",
-    research_score: 0
+    who_list: false,
+
+    # Data passing
+    research: []
   ]
 end

@@ -8,10 +8,7 @@ defmodule Med.Data.PubMed do
   @spec get_research(Med.Drug.t()) :: Med.Drug.t()
   def get_research(drug) do
     cochrane_ids = get_cochrane(drug)
-
-    trade_name_ids = search(drug.name)
-    active_ingredient_ids = search(drug.active_ingredient)
-    pubmed_ids = Enum.uniq(trade_name_ids ++ active_ingredient_ids)
+    pubmed_ids = search(drug.active_ingredient.en)
 
     abstracts = get_abstracts(cochrane_ids ++ pubmed_ids)
 
@@ -30,9 +27,10 @@ defmodule Med.Data.PubMed do
         retmode: "json",
         retmax: 100,
         term: """
-          (#{drug.active_ingredient}[Title] OR #{drug.name}[Title])
+          #{drug.active_ingredient.en}[Title]
           AND fha[Filter]
           AND "Cochrane Database Syst Rev"[Journal]
+          NOT hasupdatein
         """
       ]
     ).body["esearchresult"]["idlist"]
@@ -50,8 +48,8 @@ defmodule Med.Data.PubMed do
         retmode: "json",
         retmax: 100,
         term: """
-          #{name}[Title/Abstract]
-          AND ("randomized controlled trial"[Publication Type] OR "meta analysis"[Publication Type])
+          #{name}
+          AND (meta-analysis[Filter] OR randomizedcontrolledtrial[Filter])
           AND fha[Filter]
           NOT "Cochrane Database Syst Rev"[Journal]
         """
