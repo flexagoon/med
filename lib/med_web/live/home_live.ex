@@ -4,6 +4,7 @@ defmodule MedWeb.HomeLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
+    <Layouts.app flash={@flash}>
     <form phx-submit="check">
       <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
       <label class="font-bold text-3xl md:text-4xl" for="med">Название лекарства:</label>
@@ -11,14 +12,16 @@ defmodule MedWeb.HomeLive do
         <input
           class="
             text-3xl md:text-4xl
-            border-4 border-fg border-r-0 outline-none group-hover:border-accent focus:border-accent
+            bg-white
+            border-4 border-base-content border-r-0 outline-none group-hover:border-primary focus:border-primary
             rounded-full rounded-r-none
             px-7 py-1
             flex-auto
+            min-w-0
             peer"
           name="med"
         />
-        <button class="bg-fg rounded-full rounded-l-none p-3 pr-16 text-3xl md:text-4xl text-bg font-bold peer-focus:bg-accent group-hover:bg-accent">
+        <button class="bg-base-content rounded-full rounded-l-none p-3 pr-16 text-3xl md:text-4xl text-base-100 font-bold peer-focus:bg-primary group-hover:bg-primary min-w-0">
           ♥?
         </button>
       </div>
@@ -31,7 +34,7 @@ defmodule MedWeb.HomeLive do
       выписывают лекарства с нулевой доказательной базой.
     </p>
     <p class="mt-2">
-      <span class="text-accent font-bold">med?</span>
+      <span class="text-primary font-bold">med?</span>
       − это инструмент, который помогает вам оценить надежность лекарств.
       Он автоматически получает информацию о препарате и анализирует её при помощи
       нейросети.
@@ -45,10 +48,11 @@ defmodule MedWeb.HomeLive do
     <p class="mt-2">
       Исходный код этого сайта полностью открыт. Вы можете проверить его и
       предложить свою улучшения в <a
-        class="underline hover:text-accent"
+        class="underline hover:text-primary"
         href="https://github.com/flexagoon/med"
       >репозитории на GitHub</a>.
     </p>
+    </Layouts.app>
     """
   end
 

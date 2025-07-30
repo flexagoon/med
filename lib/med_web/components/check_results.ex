@@ -6,7 +6,7 @@ defmodule MedWeb.CheckResults do
 
   def warning(assigns) do
     ~H"""
-    <div class="text-bg bg-red-500 w-fit p-3 pb-0 rounded-xl">
+    <div class="text-base-100 bg-red-500 w-fit p-3 pb-0 rounded-xl">
       <h2 class="text-3xl sm:text-4xl font-bold pb-3">
         {@title} <.icon name="hero-exclamation-triangle-solid" class="w-10 h-10" />
       </h2>
@@ -24,24 +24,24 @@ defmodule MedWeb.CheckResults do
     <p class="text-4xl font-black mb-8">
       Эффективность
       <%= if @drug.proven do %>
-        <span class="text-accent">
+        <span class="text-primary">
           доказана
         </span>
       <% else %>
-        <span class="text-accent">
+        <span class="text-primary">
           не доказана
         </span>
       <% end %>
     </p>
 
     <div class="text-2xl sm:text-3xl">
-      <h2 class="text-accent font-bold">Активный ингредиент:</h2>
+      <h2 class="text-primary font-bold">Активный ингредиент:</h2>
       <p class="w-fit p-3 m-3 border-l-4">{@drug.active_ingredient.ru}</p>
 
       <.research drug={@drug} />
     </div>
     <hr class="my-5" />
-    <p class="text-fg/50">
+    <p class="text-base-content/50">
       Данные предоставлены в ознакомительных целях и могут быть неточными. Не является медицинской рекомендацией. Информация взята из открытых источников, администрация сайта не несёт за неё ответственности.
     </p>
     """
@@ -51,7 +51,7 @@ defmodule MedWeb.CheckResults do
 
   defp research(%{drug: %{research: []}} = assigns) do
     ~H"""
-    <p class="text-lg sm:text-xl pt-3 text-fg/80">
+    <p class="text-lg sm:text-xl pt-3 text-base-content/80">
       По препарту не найдено ни одного исследования. Эта оценка учитывает только рандомизированные клинические исследования и мета-анализы. Эти виды исследований считаются самыми надежными, и их отсутствие означает, что препарат плохо изучен.
     </p>
     """
@@ -86,20 +86,20 @@ defmodule MedWeb.CheckResults do
     </ul>
 
     <%= if @drug.description != "" do %>
-      <h2 class="text-accent font-bold mt-10">Оценка эксперта:</h2>
+      <h2 class="text-primary font-bold mt-10">Оценка эксперта:</h2>
       <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">{@drug.description}</p>
-      <p class="text-sm text-fg/50 text-right">
+      <p class="text-sm text-base-content/50 text-right">
         Источник: <a class="underline" href="https://mediqlab.com" target="_blank">MedIQ</a>
       </p>
     <% end %>
 
-    <h2 class="text-accent font-bold mt-10">ИИ-анализ:</h2>
+    <h2 class="text-primary font-bold mt-10">ИИ-анализ:</h2>
     <%= if @drug.summary == "" do %>
       <p class="text-lg sm:text-xl pt-3 animate-pulse">Генерация анализа...</p>
     <% else %>
       <p class="text-lg sm:text-xl pt-3 whitespace-pre-line">{format_summary(@drug.summary)}</p>
     <% end %>
-    <p class="text-sm text-fg/50 text-right">
+    <p class="text-sm text-base-content/50 text-right">
       Анализ создан моделью
       <a class="underline" href="https://www.anthropic.com/claude/sonnet" target="_blank">
         Claude Sonnet 4
@@ -117,13 +117,13 @@ defmodule MedWeb.CheckResults do
     <%= if @count > 0 do %>
       <%= if @count >= 100 do %>
         <li>
-          <b class="text-accent">&gt; 100</b>
+          <b class="text-primary">&gt; 100</b>
           <a class="underline" href={@href} target="_blank">{@label}</a>
         </li>
       <% else %>
         <li>
           <a class="underline" href={@href} target="_blank">{@label}</a>:
-          <b class="text-accent">{@count}</b>
+          <b class="text-primary">{@count}</b>
         </li>
       <% end %>
     <% end %>

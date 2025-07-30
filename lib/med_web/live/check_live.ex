@@ -6,40 +6,54 @@ defmodule MedWeb.CheckLive do
   @impl Phoenix.LiveView
   def render(%{loading: true} = assigns) do
     ~H"""
-    <p class="text-7xl font-black text-accent animate-pulse text-center">♥?</p>
+    <Layouts.app flash={@flash}>
+      <p class="text-7xl font-black text-primary animate-pulse text-center">♥?</p>
+    </Layouts.app>
     """
   end
 
   @impl Phoenix.LiveView
   def render(%{drug: nil} = assigns) do
     ~H"""
-    <CheckResults.warning title="Препарат не найден">
-      В Государственном Реестре Лекарственных Средств не найдено информации о данном препарате. Убедитесь, что вы верно ввели его название, и что препарат продаётся на территории России.
-    </CheckResults.warning>
+    <Layouts.app flash={@flash}>
+      <CheckResults.warning title="Препарат не найден">
+        В Государственном Реестре Лекарственных Средств не найдено информации о данном препарате. Убедитесь, что вы верно ввели его название, и что препарат продаётся на территории России.
+      </CheckResults.warning>
+    </Layouts.app>
     """
   end
 
   @impl Phoenix.LiveView
   def render(%{drug: %{type: :homeopathy}} = assigns) do
     ~H"""
-    <CheckResults.warning title="Гомеопатическое вещество">
-      Данное средство является гомеопатией. Принципы гомеопатии противоречат фундаментальным законам науки, а эффективность гомеопатических средств не была подтверждена ни одним достоверным исследованием.
-      <strong>Мы не рекомендуем использование данного средства для лечения любых заболеваний.</strong>
-    </CheckResults.warning>
+    <Layouts.app flash={@flash}>
+      <CheckResults.warning title="Гомеопатическое вещество">
+        Данное средство является гомеопатией. Принципы гомеопатии противоречат фундаментальным законам науки, а эффективность гомеопатических средств не была подтверждена ни одним достоверным исследованием.
+        <strong>Мы не рекомендуем использование данного средства для лечения любых заболеваний.</strong>
+      </CheckResults.warning>
+    </Layouts.app>
     """
   end
 
   @impl Phoenix.LiveView
   def render(%{drug: %{type: :supplement}} = assigns) do
     ~H"""
-    <CheckResults.warning title="Биологическая добавка">
-      Данное средство является биологически активной добавкой. В отличии от лекарств, БАДы практически не регулируются и не имеют большой доказательной базы. Они могут оказывать влияние на организм, но гарантировать их эффективность, как и безопасность, невозможно.
-    </CheckResults.warning>
+    <Layouts.app flash={@flash}>
+      <CheckResults.warning title="Биологическая добавка">
+        Данное средство является биологически активной добавкой. В отличии от лекарств, БАДы практически не регулируются и не имеют большой доказательной базы. Они могут оказывать влияние на организм, но гарантировать их эффективность, как и безопасность, невозможно.
+      </CheckResults.warning>
+    </Layouts.app>
     """
   end
 
   @impl Phoenix.LiveView
-  def render(assigns), do: CheckResults.results(assigns)
+  def render(assigns) do
+    ~H"""
+    <Layouts.app flash={@flash}>
+      <CheckResults.results drug={@drug} />
+    </Layouts.app>
+    """
+  end
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
