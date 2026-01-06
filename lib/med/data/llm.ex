@@ -86,10 +86,11 @@ defmodule Med.Data.LLM do
 
   defp message_handler(drug, live_pid) do
     %{
-      on_llm_new_delta: fn _model, %MessageDelta{} = delta ->
-        send(live_pid, delta)
+      on_llm_new_delta: fn _model, deltas ->
+        send(live_pid, deltas)
       end,
-      on_message_processed: fn _model, %Message{content: text} ->
+      on_message_processed: fn _model, %Message{content: content} ->
+        text = Message.ContentPart.parts_to_string(content)
         Med.cache(%{drug | summary: text})
       end
     }

@@ -25,6 +25,12 @@ defmodule Med.MixProject do
     ]
   end
 
+  def cli do
+    [
+      preferred_envs: [precommit: :test]
+    ]
+  end
+
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
@@ -34,10 +40,10 @@ defmodule Med.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.8.0-rc.4", override: true},
+      {:phoenix, "~> 1.8.3"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.1.0-rc.0", override: true},
+      {:phoenix_live_view, "~> 1.1.0", override: true},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
@@ -51,14 +57,14 @@ defmodule Med.MixProject do
        depth: 1},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       # Med? deps
       {:req, "~> 0.5.7"},
       {:floki, "~> 0.36.3"},
-      {:langchain, "~> 0.3.1"},
+      {:langchain, "~> 0.4.1"},
       {:redix, "~> 1.5.2"},
       {:envy, "~> 1.1.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
@@ -75,12 +81,13 @@ defmodule Med.MixProject do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind med", "esbuild med"],
+      "assets.build": ["compile", "tailwind med", "esbuild med"],
       "assets.deploy": [
         "tailwind med --minify",
         "esbuild med --minify",
         "phx.digest"
-      ]
+      ],
+      precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
 end

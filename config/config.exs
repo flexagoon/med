@@ -10,7 +10,7 @@ import Config
 config :med,
   generators: [timestamp_type: :utc_datetime]
 
-# Configures the endpoint
+# Configure the endpoint
 config :med, MedWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
@@ -42,7 +42,7 @@ config :tailwind,
     cd: Path.expand("..", __DIR__)
   ]
 
-# Configures Elixir's Logger
+# Configure Elixir's Logger
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

@@ -24,7 +24,8 @@ defmodule MedWeb.Endpoint do
     at: "/",
     from: :med,
     gzip: not code_reloading?,
-    only: MedWeb.static_paths()
+    only: MedWeb.static_paths(),
+    raise_on_missing_only: code_reloading?
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
