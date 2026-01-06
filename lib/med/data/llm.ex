@@ -3,7 +3,7 @@ defmodule Med.Data.LLM do
   Module for summarizing the research using an LLM.
   """
   alias LangChain.Chains.LLMChain
-  alias LangChain.ChatModels.ChatAnthropic
+  alias LangChain.ChatModels.ChatGoogleAI
   alias LangChain.Message
   alias LangChain.MessageDelta
 
@@ -25,7 +25,14 @@ defmodule Med.Data.LLM do
     prompt = build_prompt(drug)
     callback = message_handler(drug, live_pid)
 
-    %{llm: ChatAnthropic.new!(%{model: "claude-sonnet-4-20250514", stream: true})}
+    %{
+      llm:
+        ChatGoogleAI.new!(%{
+          model: "gemini-3-flash-preview",
+          stream: true,
+          thinking_config: %{thinking_level: "medium"}
+        })
+    }
     |> LLMChain.new!()
     |> LLMChain.add_messages([
       Message.new_system!(@system_prompt),
